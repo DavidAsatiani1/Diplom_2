@@ -3,7 +3,6 @@ import requests
 
 from data import Message, Order
 from helpers import *
-from conftest import create_user
 
 
 class TestCreateOrder:

@@ -1,24 +1,30 @@
 import allure
 import requests
+import pytest
 
 from data import Message
-from helpers import *
+from helpers import get_token, get_order_list, delete_user
+
+
+@pytest.fixture
+def auth_user():
+    token = get_token()
+    yield token
+    delete_user(token)
 
 
 class TestOrderList:
     @allure.step('Получение заказов авторизованным пользователем')
-    def test_get_order_list_auth_user(self):
-        token = get_token()
-        list = get_order_list(token)
-        assert list.status_code == 200
-        assert list.json()['success'] is True
-        delete_user(token)
-
+    def test_get_order_list_auth_user(self, auth_user):
+        token = auth_user
+        response = get_order_list(token)
+        assert response.status_code == 200
+        assert response.json()['success'] is True
 
     @allure.step('Получение заказов неавторизованным пользователем')
     def test_get_order_list_unauth_user(self):
         token = ''
-        list = get_order_list(token)
-        assert list.status_code == 401
-        assert list.json()['success'] is False
-        assert list.json()['message'] == Message.UNAUTH
+        response = get_order_list(token)
+        assert response.status_code == 401
+        assert response.json()['success'] is False
+        assert response.json()['message'] == Message.UNAUTH

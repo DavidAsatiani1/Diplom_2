@@ -2,7 +2,6 @@ import allure
 import requests
 
 from data import Endpoint, Message
-from conftest import create_user
 from helpers import *
 
 
