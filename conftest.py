@@ -1,7 +1,7 @@
 import pytest
 import requests
 
-from helpers import *
+from helpers import registration_user, delete_user, get_token, delete_user
 from data import Endpoint
 
 
@@ -14,4 +14,10 @@ def create_user():
         'password': login_pass[1]
     })
     token = r_login.json()['accessToken']
+    delete_user(token)
+
+@pytest.fixture
+def auth_user():
+    token = get_token()
+    yield token
     delete_user(token)

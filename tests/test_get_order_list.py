@@ -5,14 +5,6 @@ import pytest
 from data import Message
 from helpers import get_token, get_order_list, delete_user
 
-
-@pytest.fixture
-def auth_user():
-    token = get_token()
-    yield token
-    delete_user(token)
-
-
 class TestOrderList:
     @allure.step('Получение заказов авторизованным пользователем')
     def test_get_order_list_auth_user(self, auth_user):
